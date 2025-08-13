@@ -1,118 +1,237 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { 
+  TrendingUp, 
+  TrendingDown, 
+  Settings, 
+  Search, 
+  Maximize2, 
+  BarChart3,
+  CandlestickChart,
+  LineChart,
+  Volume2,
+  Crosshair,
+  Pencil,
+  Minus,
+  TrendingUpDown,
+  Circle,
+  Square,
+  Triangle
+} from "lucide-react";
 
 export function Chart() {
-  const timeframes = ["5m", "1h", "D"];
-  const indicators = ["Indicators"];
+  const timeframes = [
+    { label: "1m", active: false },
+    { label: "5m", active: false },
+    { label: "15m", active: false },
+    { label: "1H", active: true },
+    { label: "4H", active: false },
+    { label: "1D", active: false },
+    { label: "1W", active: false },
+    { label: "1M", active: false }
+  ];
 
-  // Mock candlestick data visualization
-  const generateMockCandles = () => {
+  const indicators = [
+    "MA", "EMA", "BB", "RSI", "MACD", "Volume", "Stoch"
+  ];
+
+  const drawingTools = [
+    { icon: Crosshair, name: "Crosshair" },
+    { icon: Pencil, name: "Freehand" },
+    { icon: Minus, name: "Trendline" },
+    { icon: TrendingUpDown, name: "Channel" },
+    { icon: Circle, name: "Circle" },
+    { icon: Square, name: "Rectangle" },
+    { icon: Triangle, name: "Triangle" }
+  ];
+
+  // Enhanced mock candlestick data
+  const generateAdvancedCandles = () => {
     const candles = [];
     let price = 44.5;
+    let volume = 1000;
     
-    for (let i = 0; i < 50; i++) {
-      const change = (Math.random() - 0.5) * 2;
+    for (let i = 0; i < 120; i++) {
+      const volatility = 0.02;
+      const trend = Math.sin(i * 0.1) * 0.01;
+      const noise = (Math.random() - 0.5) * volatility;
+      const change = trend + noise;
+      
       const open = price;
       const close = price + change;
-      const high = Math.max(open, close) + Math.random() * 0.5;
-      const low = Math.min(open, close) - Math.random() * 0.5;
+      const high = Math.max(open, close) + Math.random() * 0.3;
+      const low = Math.min(open, close) - Math.random() * 0.3;
       
-      candles.push({ open, high, low, close, volume: Math.random() * 100 });
+      volume = volume * (0.8 + Math.random() * 0.4);
+      
+      candles.push({ 
+        open, 
+        high, 
+        low, 
+        close, 
+        volume,
+        time: Date.now() - (120 - i) * 3600000 // hourly data
+      });
       price = close;
     }
     
     return candles;
   };
 
-  const candleData = generateMockCandles();
+  const candleData = generateAdvancedCandles();
+  const currentPrice = candleData[candleData.length - 1].close;
+  const priceChange = currentPrice - candleData[candleData.length - 2].close;
+  const priceChangePercent = (priceChange / candleData[candleData.length - 2].close) * 100;
 
   return (
-    <div className="flex-1 bg-chart-bg">
-      {/* Chart Header */}
-      <div className="flex items-center justify-between p-4 border-b border-border">
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-2">
-            <span className="text-bullish">●</span>
-            <span className="text-foreground font-mono text-sm">HYPE/USDC-107 • 1h • Hyperliquid</span>
-            <span className="text-bullish font-mono text-sm">O 44.575</span>
-            <span className="text-bullish font-mono text-sm">H 44.682</span>
-            <span className="text-bearish font-mono text-sm">L 44.444</span>
-            <span className="text-bearish font-mono text-sm">C 44.512</span>
-            <span className="text-muted-foreground font-mono text-sm">-0.062000 (-0.14%)</span>
+    <div className="flex-1 bg-chart-bg border-r border-border">
+      {/* Professional Chart Header */}
+      <div className="flex items-center justify-between p-3 bg-card border-b border-border">
+        <div className="flex items-center space-x-6">
+          {/* Symbol and Price Info */}
+          <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-2">
+              <div className="w-5 h-5 bg-primary rounded-full"></div>
+              <span className="text-foreground font-semibold">HYPE/USDC</span>
+              <Badge variant="outline" className="text-xs">Perpetual</Badge>
+            </div>
+            <div className="flex items-center space-x-4 text-sm">
+              <span className="text-foreground font-mono font-semibold text-lg">
+                {currentPrice.toFixed(3)}
+              </span>
+              <span className={`font-mono ${priceChange >= 0 ? 'text-bullish' : 'text-bearish'}`}>
+                {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(3)} ({priceChangePercent >= 0 ? '+' : ''}{priceChangePercent.toFixed(2)}%)
+              </span>
+              <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+                <span>H: 44.98</span>
+                <span>L: 43.21</span>
+                <span>V: 2.4M</span>
+              </div>
+            </div>
           </div>
         </div>
         
         <div className="flex items-center space-x-4">
-          <div className="flex space-x-1">
-            {timeframes.map((tf) => (
-              <Button
-                key={tf}
-                variant={tf === "1h" ? "secondary" : "ghost"}
-                size="sm"
-                className="text-xs"
+          {/* Chart Type Selector */}
+          <div className="flex items-center space-x-1 bg-secondary rounded-md p-1">
+            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+              <CandlestickChart className="w-4 h-4" />
+            </Button>
+            <Button variant="ghost" size="sm" className="h-7 w-7 p-0 text-muted-foreground">
+              <BarChart3 className="w-4 h-4" />
+            </Button>
+            <Button variant="ghost" size="sm" className="h-7 w-7 p-0 text-muted-foreground">
+              <LineChart className="w-4 h-4" />
+            </Button>
+          </div>
+          
+          {/* Drawing Tools */}
+          <div className="flex items-center space-x-1">
+            {drawingTools.slice(0, 4).map((tool, index) => (
+              <Button 
+                key={index}
+                variant="ghost" 
+                size="sm" 
+                className="h-8 w-8 p-0 text-muted-foreground hover:text-foreground"
               >
-                {tf}
+                <tool.icon className="w-4 h-4" />
               </Button>
             ))}
           </div>
           
-          <Button variant="ghost" size="sm" className="text-xs">
-            {indicators[0]}
-          </Button>
-          
-          <div className="flex space-x-2">
-            <Button variant="ghost" size="icon" className="w-6 h-6">
-              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
+          {/* Chart Controls */}
+          <div className="flex items-center space-x-1">
+            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+              <Search className="w-4 h-4" />
             </Button>
-            <Button variant="ghost" size="icon" className="w-6 h-6">
-              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-              </svg>
+            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+              <Settings className="w-4 h-4" />
+            </Button>
+            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+              <Maximize2 className="w-4 h-4" />
             </Button>
           </div>
         </div>
       </div>
 
-      {/* Chart Area */}
-      <div className="h-96 p-4 relative">
+      {/* Timeframe and Indicators Bar */}
+      <div className="flex items-center justify-between p-3 bg-secondary/30 border-b border-border">
+        <div className="flex items-center space-x-1">
+          {timeframes.map((tf) => (
+            <Button
+              key={tf.label}
+              variant={tf.active ? "default" : "ghost"}
+              size="sm"
+              className={`h-7 text-xs px-3 ${
+                tf.active 
+                  ? "bg-primary text-primary-foreground" 
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {tf.label}
+            </Button>
+          ))}
+        </div>
+        
+        <div className="flex items-center space-x-1">
+          <span className="text-xs text-muted-foreground mr-2">Indicators:</span>
+          {indicators.slice(0, 4).map((indicator) => (
+            <Button
+              key={indicator}
+              variant="ghost"
+              size="sm"
+              className="h-7 text-xs px-2 text-muted-foreground hover:text-foreground hover:bg-muted"
+            >
+              {indicator}
+            </Button>
+          ))}
+          <Button variant="outline" size="sm" className="h-7 text-xs px-2">
+            + Add
+          </Button>
+        </div>
+      </div>
+
+      {/* Professional Chart Area */}
+      <div className="relative h-[500px] bg-chart-bg">
         <svg width="100%" height="100%" className="absolute inset-0">
-          {/* Grid lines */}
-          {[...Array(8)].map((_, i) => (
+          {/* Professional Grid */}
+          {[...Array(12)].map((_, i) => (
             <line
               key={`h-${i}`}
               x1="0"
-              y1={`${(i / 7) * 100}%`}
+              y1={`${(i / 11) * 100}%`}
               x2="100%"
-              y2={`${(i / 7) * 100}%`}
+              y2={`${(i / 11) * 100}%`}
               stroke="hsl(var(--grid-line))"
               strokeWidth="0.5"
+              opacity="0.3"
             />
           ))}
-          {[...Array(10)].map((_, i) => (
+          {[...Array(20)].map((_, i) => (
             <line
               key={`v-${i}`}
-              x1={`${(i / 9) * 100}%`}
+              x1={`${(i / 19) * 100}%`}
               y1="0"
-              x2={`${(i / 9) * 100}%`}
+              x2={`${(i / 19) * 100}%`}
               y2="100%"
               stroke="hsl(var(--grid-line))"
               strokeWidth="0.5"
+              opacity="0.3"
             />
           ))}
           
-          {/* Mock candlesticks */}
-          {candleData.map((candle, i) => {
-            const x = (i / candleData.length) * 100;
+          {/* Enhanced Candlesticks */}
+          {candleData.slice(-80).map((candle, i) => {
+            const x = (i / 80) * 100;
             const isGreen = candle.close > candle.open;
             const bodyTop = isGreen ? candle.close : candle.open;
             const bodyBottom = isGreen ? candle.open : candle.close;
-            const normalizePrice = (price: number) => ((price - 43) / 3) * 100;
+            const normalizePrice = (price: number) => ((price - 42) / 6) * 100;
             
             return (
               <g key={i}>
-                {/* Wick */}
+                {/* Shadow/Wick */}
                 <line
                   x1={`${x}%`}
                   y1={`${100 - normalizePrice(candle.high)}%`}
@@ -123,50 +242,73 @@ export function Chart() {
                 />
                 {/* Body */}
                 <rect
-                  x={`${x - 0.5}%`}
+                  x={`${x - 0.4}%`}
                   y={`${100 - normalizePrice(bodyTop)}%`}
-                  width="1%"
-                  height={`${normalizePrice(bodyTop) - normalizePrice(bodyBottom)}%`}
+                  width="0.8%"
+                  height={`${Math.max(0.5, normalizePrice(bodyTop) - normalizePrice(bodyBottom))}%`}
                   fill={isGreen ? "hsl(var(--bullish))" : "hsl(var(--bearish))"}
+                  stroke={isGreen ? "hsl(var(--bullish))" : "hsl(var(--bearish))"}
+                  strokeWidth="0.5"
                 />
               </g>
             );
           })}
+          
+          {/* Moving Averages */}
+          <path
+            d={candleData.slice(-80).map((candle, i) => {
+              const x = (i / 80) * 100;
+              const y = 100 - ((candle.close - 42) / 6) * 100;
+              return `${i === 0 ? 'M' : 'L'} ${x} ${y}`;
+            }).join(' ')}
+            fill="none"
+            stroke="hsl(var(--primary))"
+            strokeWidth="1.5"
+            opacity="0.8"
+          />
         </svg>
         
-        {/* Price labels */}
-        <div className="absolute right-2 top-0 h-full flex flex-col justify-between text-xs text-muted-foreground font-mono">
-          {[47.000, 46.000, 45.000, 44.000, 43.000, 42.000, 41.000, 40.000].map((price) => (
-            <div key={price} className="bg-background px-1 rounded">
+        {/* Professional Price Scale */}
+        <div className="absolute right-0 top-0 h-full w-16 bg-card/90 border-l border-border flex flex-col justify-between py-4">
+          {[48.000, 47.000, 46.000, 45.000, 44.000, 43.000, 42.000, 41.000].map((price, i) => (
+            <div key={price} className="text-xs text-muted-foreground font-mono px-2 py-1">
               {price.toFixed(3)}
             </div>
           ))}
         </div>
+        
+        {/* Current Price Line */}
+        <div 
+          className="absolute right-0 w-full h-0.5 bg-primary opacity-80"
+          style={{ top: `${100 - ((currentPrice - 42) / 6) * 100}%` }}
+        >
+          <div className="absolute right-0 bg-primary text-primary-foreground text-xs px-2 py-1 rounded-l">
+            {currentPrice.toFixed(3)}
+          </div>
+        </div>
       </div>
 
-      {/* Volume Chart */}
-      <div className="h-20 p-4 border-t border-border">
+      {/* Professional Volume Chart */}
+      <div className="h-24 p-3 border-t border-border bg-card/50">
         <div className="flex items-center space-x-2 mb-2">
+          <Volume2 className="w-4 h-4 text-muted-foreground" />
           <span className="text-muted-foreground text-xs">Volume</span>
-          <span className="text-bearish text-xs font-mono">24.577K</span>
+          <span className="text-foreground text-xs font-mono">
+            {(candleData[candleData.length - 1].volume / 1000).toFixed(1)}K
+          </span>
         </div>
-        <div className="h-12 flex items-end space-x-1">
-          {candleData.map((candle, i) => (
-            <div
-              key={i}
-              className={`w-2 ${candle.close > candle.open ? "bg-bullish" : "bg-bearish"} opacity-60`}
-              style={{ height: `${candle.volume}%` }}
-            />
-          ))}
-        </div>
-        
-        {/* Time labels */}
-        <div className="flex justify-between text-xs text-muted-foreground mt-2">
-          <span>9</span>
-          <span>10</span>
-          <span>11</span>
-          <span>12</span>
-          <span>13</span>
+        <div className="h-12 flex items-end space-x-0.5">
+          {candleData.slice(-80).map((candle, i) => {
+            const isGreen = candle.close > candle.open;
+            const height = (candle.volume / Math.max(...candleData.map(c => c.volume))) * 100;
+            return (
+              <div
+                key={i}
+                className={`flex-1 ${isGreen ? "bg-bullish" : "bg-bearish"} opacity-60 hover:opacity-80 transition-opacity`}
+                style={{ height: `${height}%` }}
+              />
+            );
+          })}
         </div>
       </div>
     </div>

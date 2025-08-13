@@ -4,6 +4,8 @@ import { Sidebar } from "@/components/trading/Sidebar";
 import { Chart } from "@/components/trading/Chart";
 import { OrderBook } from "@/components/trading/OrderBook";
 import { TradingPanel } from "@/components/trading/TradingPanel";
+import { Watchlist } from "@/components/trading/Watchlist";
+import { RecentTrades } from "@/components/trading/RecentTrades";
 
 const Index = () => {
   return (
@@ -14,10 +16,21 @@ const Index = () => {
       <div className="flex h-[calc(100vh-140px)]">
         <Sidebar />
         
-        <div className="flex-1 flex">
+        <div className="flex flex-1">
+          {/* Left Panel - Watchlist */}
+          <Watchlist />
+          
+          {/* Center - Chart */}
           <Chart />
-          <OrderBook />
-          <TradingPanel />
+          
+          {/* Right Panels */}
+          <div className="flex flex-col">
+            <div className="flex">
+              <OrderBook />
+              <RecentTrades />
+            </div>
+            <TradingPanel />
+          </div>
         </div>
       </div>
     </div>
