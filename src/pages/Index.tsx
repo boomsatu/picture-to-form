@@ -11,15 +11,15 @@ const Index = () => {
       <TradingHeader />
       <PriceHeader />
       
-      <div className="flex h-[calc(100vh-140px)]">
+      <div className="flex flex-col lg:flex-row h-[calc(100vh-140px)]">
         <Sidebar />
         
-        <div className="flex flex-1">
+        <div className="flex flex-col lg:flex-row flex-1 overflow-hidden">
           {/* Center - Chart */}
           <Chart />
           
-          {/* Right Panels */}
-          <div className="flex">
+          {/* Right Panels - Stack on mobile, side by side on desktop */}
+          <div className="flex flex-col lg:flex-row lg:w-auto w-full">
             <OrderBookTabs />
             <TradingPanel />
           </div>

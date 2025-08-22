@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 
 export function TradingHeader() {
   return (
-    <header className="bg-card border-b border-border px-6 py-3">
+    <header className="bg-card border-b border-border px-3 lg:px-6 py-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-8">
           <div className="flex items-center space-x-2">
@@ -13,7 +13,7 @@ export function TradingHeader() {
             <span className="text-foreground font-semibold text-lg">Hyperliquid</span>
           </div>
           
-          <nav className="flex items-center space-x-6">
+          <nav className="hidden lg:flex items-center space-x-6">
             <Button variant="ghost" className="text-foreground hover:text-primary">Trade</Button>
             <Button variant="ghost" className="text-muted-foreground hover:text-primary">Vaults</Button>
             <Button variant="ghost" className="text-muted-foreground hover:text-primary">Portfolio</Button>

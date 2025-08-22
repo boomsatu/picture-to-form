@@ -193,7 +193,7 @@ export function Chart() {
       </div>
 
       {/* Professional Chart Area */}
-      <div className="relative h-[500px] bg-chart-bg">
+      <div className="relative h-64 md:h-96 lg:h-[500px] bg-chart-bg overflow-hidden">
         <svg width="100%" height="100%" className="absolute inset-0">
           {/* Professional Grid */}
           {[...Array(12)].map((_, i) => (

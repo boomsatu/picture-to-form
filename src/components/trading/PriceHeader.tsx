@@ -3,14 +3,14 @@ import { MarketSelector } from "./MarketSelector";
 
 export function PriceHeader() {
   return (
-    <div className="bg-card border-b border-border px-6 py-4">
-      <div className="flex items-center space-x-8">
+    <div className="bg-card border-b border-border px-3 lg:px-6 py-4">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:space-x-8 space-y-3 lg:space-y-0">
         <div className="flex items-center space-x-3">
           <MarketSelector />
           <Badge variant="outline" className="text-xs">Spot</Badge>
         </div>
         
-        <div className="flex items-center space-x-8 text-sm">
+        <div className="flex flex-wrap items-center gap-4 lg:gap-8 text-sm">
           <div>
             <div className="text-muted-foreground">Price</div>
             <div className="text-foreground font-mono font-medium">44.513</div>
