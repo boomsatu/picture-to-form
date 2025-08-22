@@ -70,7 +70,7 @@ export function Watchlist() {
   ];
 
   return (
-    <div className="bg-card border border-border rounded-lg">
+    <div className="bg-card border border-border rounded-none">
       <div className="p-4">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">

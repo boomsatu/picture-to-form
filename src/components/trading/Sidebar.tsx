@@ -15,7 +15,7 @@ export function Sidebar() {
   ];
 
   return (
-    <div className="w-12 bg-card border-r border-border flex flex-col items-center py-4 space-y-3">
+    <div className="w-12 bg-card border-r border-border rounded-none flex flex-col items-center py-4 space-y-3">
       {sidebarItems.map((item, index) => (
         <Button
           key={index}

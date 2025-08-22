@@ -85,7 +85,7 @@ export function Chart() {
   const priceChangePercent = (priceChange / candleData[candleData.length - 2].close) * 100;
 
   return (
-    <div className="flex-1 bg-chart-bg border-r border-border">
+    <div className="flex-1 bg-chart-bg border-r border-border rounded-none">
       {/* Professional Chart Header */}
       <div className="flex items-center justify-between p-3 bg-card border-b border-border">
         <div className="flex items-center space-x-6">

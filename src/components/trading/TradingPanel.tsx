@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 export function TradingPanel() {
   return (
-    <Card className="w-80 h-full bg-card border-border">
+    <Card className="w-80 h-full bg-card border-border rounded-none">
       <div className="p-4">
         <Tabs defaultValue="market" className="w-full">
           <TabsList className="grid w-full grid-cols-3 mb-4">

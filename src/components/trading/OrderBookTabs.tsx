@@ -44,7 +44,7 @@ export function OrderBookTabs() {
   ];
 
   return (
-    <Card className="w-80 h-full bg-card border-border">
+    <Card className="w-72 h-full bg-card border-border rounded-none">
       <Tabs defaultValue="orderbook" className="h-full">
         <div className="flex items-center justify-between p-4 pb-2">
           <TabsList className="grid w-full grid-cols-2">
