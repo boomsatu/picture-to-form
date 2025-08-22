@@ -70,11 +70,11 @@ export function Watchlist() {
   ];
 
   return (
-    <Card className="w-80 h-full bg-card border-border">
+    <div className="bg-card border border-border rounded-lg">
       <div className="p-4">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-foreground font-semibold">Watchlist</h3>
+          <h3 className="text-foreground font-semibold">Markets</h3>
           <div className="flex items-center space-x-2">
             <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
               <Star className="w-4 h-4" />
@@ -193,6 +193,6 @@ export function Watchlist() {
           </div>
         </div>
       </div>
-    </Card>
+    </div>
   );
 }
