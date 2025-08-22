@@ -2,10 +2,8 @@ import { TradingHeader } from "@/components/trading/TradingHeader";
 import { PriceHeader } from "@/components/trading/PriceHeader";
 import { Sidebar } from "@/components/trading/Sidebar";
 import { Chart } from "@/components/trading/Chart";
-import { OrderBook } from "@/components/trading/OrderBook";
+import { OrderBookTabs } from "@/components/trading/OrderBookTabs";
 import { TradingPanel } from "@/components/trading/TradingPanel";
-import { Watchlist } from "@/components/trading/Watchlist";
-import { RecentTrades } from "@/components/trading/RecentTrades";
 
 const Index = () => {
   return (
@@ -17,18 +15,12 @@ const Index = () => {
         <Sidebar />
         
         <div className="flex flex-1">
-          {/* Left Panel - Watchlist */}
-          <Watchlist />
-          
           {/* Center - Chart */}
           <Chart />
           
           {/* Right Panels */}
-          <div className="flex flex-col">
-            <div className="flex">
-              <OrderBook />
-              <RecentTrades />
-            </div>
+          <div className="flex">
+            <OrderBookTabs />
             <TradingPanel />
           </div>
         </div>
